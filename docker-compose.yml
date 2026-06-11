@@ -1,0 +1,13 @@
+services:
+  backend:
+    build: .
+    container_name: sdinteractive-backend
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      PORT: "8081"
+      VIDEO_DIR: "/app/video"
+      PUBLIC_BASE_URL: "${PUBLIC_BASE_URL:-http://localhost:8081}"
+    volumes:
+      - ./video:/app/video:ro

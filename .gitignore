@@ -1,0 +1,50 @@
+# Local secrets and machine-specific configuration
+.env
+.env.*
+!.env.example
+local.properties
+keystore.properties
+*.jks
+*.keystore
+*.p12
+*.pem
+
+# Build output and IDE/runtime caches
+.gradle/
+.kotlin/
+.android-sdk/
+.tools/
+.superpowers/
+build/
+**/build/
+out/
+
+# Runtime logs and transient debugging output
+*.log
+*.err.log
+server-run*.log
+server-run*.err.log
+captures/
+screenshots/
+
+# Large/private media assets used for local demos
+video/
+*.mp4
+*.mov
+*.mkv
+
+# Public demo APKs are intentionally versioned.
+*.apk
+!release/
+!release/*.apk
+
+# Internal planning / process artifacts
+docs/superpowers/
+docs/PROJECT_SUBMISSION.md
+交互按钮ui设计/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.idea/
+*.iml
