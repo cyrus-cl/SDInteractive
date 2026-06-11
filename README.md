@@ -174,10 +174,10 @@ curl.exe -I -H "Range: bytes=0-15" http://localhost:8081/static/videos/ep_001.mp
 ipconfig
 ```
 
-假设电脑 IP 为 `192.168.1.100`，启动服务前设置：
+假设电脑 IP 为 `ip`，启动服务前设置：
 
 ```powershell
-$env:PUBLIC_BASE_URL='http://192.168.1.100:8081'
+$env:PUBLIC_BASE_URL='http://ip'
 $env:VIDEO_DIR='D:\SDInteractive\video'
 .\gradlew.bat :server:run
 ```
@@ -185,16 +185,15 @@ $env:VIDEO_DIR='D:\SDInteractive\video'
 然后在 Android App 的服务地址中填写：
 
 ```text
-http://192.168.1.100:8081/
+http://ip/
 ```
 
-如果真机无法访问，请检查 Windows 防火墙是否允许局域网访问 `8081` 端口。
 
 ### 4. Docker 启动后端
 
 ```powershell
 cd D:\SDInteractive
-$env:PUBLIC_BASE_URL='http://192.168.1.100:8081'
+$env:PUBLIC_BASE_URL='http://ip地址'
 docker compose up -d --build
 ```
 
@@ -211,7 +210,7 @@ release/SDInteractive-demo-release.apk
 安装后，可在 App 的“我的”页面修改服务地址为当前电脑的局域网地址，例如：
 
 ```text
-http://192.168.1.100:8081/
+http:/ip地址/
 ```
 
 重新打包 APK：
@@ -221,7 +220,7 @@ cd D:\SDInteractive
 $env:JAVA_HOME='D:\CodeDevelopment\JDK25'
 $env:ANDROID_HOME='D:\SDInteractive\.android-sdk'
 $env:ANDROID_SDK_ROOT='D:\SDInteractive\.android-sdk'
-.\gradlew.bat :android-app:assembleRelease -PserverBaseUrl=http://192.168.1.100:8081/
+.\gradlew.bat :android-app:assembleRelease -PserverBaseUrl=http://ip地址/
 ```
 
 输出路径：
@@ -230,7 +229,7 @@ $env:ANDROID_SDK_ROOT='D:\SDInteractive\.android-sdk'
 android-app/build/outputs/apk/release/android-app-release.apk
 ```
 
-模拟器调试可使用默认地址 `http://10.0.2.2:8081/`。真机 USB 调试也可以使用：
+模拟器调试可使用默认地址 `http://ip地址/`。真机 USB 调试也可以使用：
 
 ```powershell
 adb reverse tcp:8081 tcp:8081
@@ -239,7 +238,7 @@ adb reverse tcp:8081 tcp:8081
 然后在 App 中填写：
 
 ```text
-http://127.0.0.1:8081/
+http://ip地址/
 ```
 
 ## AI 配置
@@ -261,8 +260,6 @@ ARK_API_KEY / DOUBAO_API_KEY / VOLCENGINE_API_KEY / APIKEY
 ARK_MODEL / DOUBAO_MODEL / ARK_ENDPOINT_ID / EP / MODEL
 ARK_BASE_URL / DOUBAO_BASE_URL / VOLCENGINE_BASE_URL
 ```
-
-请不要提交 `.env`、真实 API Key、模型密钥或任何私有配置。公开仓库只保留 `.env.example`。
 
 ## 接口概览
 
@@ -318,22 +315,3 @@ $env:JAVA_HOME='D:\CodeDevelopment\JDK25'
 - Ktor 接口、视频目录解析、MP4 Range 请求和用户行为记录。
 - AI 互动打标的 JSON 归一化、fallback 和窗口密度控制。
 - 人物识别的人物目录、视觉结果过滤、时间线 fallback 和单帧证据约束。
-
-## 公开发布安全说明
-
-本仓库按公开发布策略整理：
-
-- 不提交 `.env`、`local.properties`、keystore、真实 API Key、模型密钥或任何机器私有配置。
-- 不提交 `.android-sdk/`、`.gradle/`、`.kotlin/`、`build/`、`**/build/`、日志文件等中间产物。
-- 不提交原始短剧视频素材，`video/` 仅作为本地运行目录。
-- 不提交内部过程文档、临时设计图、调试截图和工具缓存目录。
-- 仅保留公开复现工程需要的源码、Gradle 配置、Docker 配置、README、部署说明、配置模板和演示 APK。
-
-上传 GitHub 前建议再次执行：
-
-```powershell
-git status --ignored
-git ls-files
-```
-
-确认将要提交的文件中没有 `.env`、真实密钥、视频素材、日志和构建中间文件。API Key 泄露风险很高，一旦误传应立即撤销旧密钥并重新生成。
